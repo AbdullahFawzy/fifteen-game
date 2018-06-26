@@ -1,2 +1,2 @@
-# python project
+# python
 # fifteen-game
