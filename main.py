@@ -19,6 +19,7 @@ class Main:
             self.__zero = [self.__size-1, self.__size-1]
             self.createBoard()
             self.createFinalBoard()
+            self.keys = pygame.key.get_pressed()
 
     def getSize(self):
         return self.__size
@@ -54,6 +55,10 @@ class Main:
         "Method to create object if there are more than one attempt"
         return board.Board(self.__board, self.__fboard, self.__size)
 
+    def createGameDisplay(self, obj):
+        obj.createGameDisplay()
+        pygame.display.update()
+
 
 if __name__ == "__main__":
     plays = {} #storing the number of plays
@@ -69,6 +74,7 @@ if __name__ == "__main__":
         print("\nPlayer #{}:\n".format(len(plays)+1))
 
         while startObj.getStart(): #Catch ant input error from the user's size
+            pygame.time.wait(200) #delay to avoid choosing the grip mistakenly
             startObj.chooseGridSize()
             
             try:
@@ -82,40 +88,24 @@ if __name__ == "__main__":
                     print("\nThe size between (3, 9)\n")
                     continue
                 break
+
         obj = Main(size)
         plays[obj] = obj.createGame() #creating new object with required size
+        obj.createGameDisplay(startObj) #create new window with canvas
 
         #keep playing until the current board equals the final board
-        while not plays[obj].checkWinner():
-            plays[obj].printBoard()
-
-            while True: #Catch an input error from the user's move
-                try:
-                    move = int(input("\nMove: "))
-                except ValueError as VE:
-                    print("{}\n".format(VE))
-                else:
-                    if move < 1 or move >= int(math.pow(size, 2)):
-                        print("The move between ({}, {})".format(1, int(math.pow(size, 2)-1)))
-                        continue
-                    break
-            plays[obj].checkMove(move)
-
+        while True:
+            if plays[obj].checkWinner():
+                plays[obj].printBoard(startObj)
+                break
+            plays[obj].printBoard(startObj)
+            plays[obj].makeMove(startObj)
+            
+        startObj.messsage_display("Congrats!", 250, 400)
+        pygame.display.update()
         print("\n~Congrats!\n")
-
-        while True: #Catch an input error and force the user to enter only one character
-            repeat = input("Play Again(Y/N): ")
-            if len(repeat) != 1:
-                print("Enter only one cahracter\n")
-                continue
-            elif 'y' not in repeat.lower() and 'n' not in repeat.lower():
-                print("Please enter (Y/N)\n")
-                continue
-            break
-        #exit from the game
-        if 'n' in repeat.lower():
-            print("\nSee You Soon!\n")
-            break
-
+        pygame.time.delay(2000)
         pygame.quit()
         quit()
+
+   

@@ -19,6 +19,7 @@ class Start(object):
         self.bright_red = (217, 39, 0)
         self.bright_orange = (234, 91, 0)
         self.white = (255, 255, 255)
+        self.brown = (43, 0, 0)
         self.start = False
 
     def createWindow(self):
@@ -37,7 +38,7 @@ class Start(object):
         self.TextRect.center = ((x),(y))
         self.gameDisplay.blit(self.TextSurf, self.TextRect)
 
-    def button(self, msg, x, y, w, h, ic, ac, action=None):
+    def button(self, msg, x, y, w, h, ic = (217, 39, 0), ac = (234, 91, 0), action=None):
         "Create a button by and change the color when hover over it"
         self.mouse = pygame.mouse.get_pos()
         self.click = pygame.mouse.get_pressed()
@@ -57,7 +58,7 @@ class Start(object):
                         self.grid = False
                         self.gridSize = action
         else:
-            pygame.draw.rect(self.gameDisplay, ic, (x,y,w,h))
+            pygame.draw.rect(self.gameDisplay, ic, (x,y,w,h))   
 
         self.smallText = pygame.font.SysFont("comicsansms", 35)
         self.textSurf, self.textRect = self.text_objects(msg, self.smallText)
@@ -70,12 +71,8 @@ class Start(object):
         self.createWindow()
         
         while not self.gameExit:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    quit()
-
-            self.gameDisplay.fill(self.orange)
+            self.checkQuit()
+            self.createGameDisplay()
             self.messsage_display("FIFTEEN GAME", 250, 150)            
             
             #Create Start And Exit Button 
@@ -89,12 +86,9 @@ class Start(object):
         "This method is to choose the grid size"
 
         while self.grid:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    quit()
+            self.checkQuit()
             
-            self.gameDisplay.fill(self.bright_orange)
+            self.createGameDisplay()
             self.messsage_display("CHOOSE GRID SIZE", 250, 150)
 
             #Size buttons
@@ -115,3 +109,39 @@ class Start(object):
 
     def getStart(self):
         return self.start
+        
+    def getGameDisplay(self):
+        return self.gameDisplay()
+
+    def checkQuit(self):
+        for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+    
+    def createGameDisplay(self):
+        self.gameDisplay.fill(self.bright_orange)
+
+    def createCanvas(self, x, y, w, h):
+        pygame.draw.rect(self.gameDisplay, self.brown,(x, y, w, h))
+
+    def drawRect(self, x, y, w, h, color, txt):
+        pygame.draw.rect(self.gameDisplay, color, pygame.Rect(x, y, w, h))
+        smallText = pygame.font.SysFont('comicsansms', 30)
+        textSurf, textRect = self.text_objects(txt, smallText)
+        textRect.center = (x+(w/2), y+(h/2))
+        self.gameDisplay.blit(textSurf, textRect)
+ 
+    def getKeyPressed(self):
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    return 1
+                if event.key == pygame.K_RIGHT:
+                    return 2
+                if event.key == pygame.K_UP:
+                    return 3
+                if event.key == pygame.K_DOWN:
+                    return 4
+        return 0
