@@ -1,3 +1,5 @@
+from start import Start
+import pygame, sys
 import board
 import math
 
@@ -55,13 +57,24 @@ class Main:
 
 if __name__ == "__main__":
     plays = {} #storing the number of plays
-
+    
+    #connect the backend with frontend
+    pygame.init()
+    screen_width = 500
+    screen_height = 500
+    startObj = Start(screen_width, screen_height)
+    
     while 1:
+        startObj.start_loop()
         print("\nPlayer #{}:\n".format(len(plays)+1))
 
-        while True: #Catch ant input error from the user's size
+        while startObj.getStart(): #Catch ant input error from the user's size
+            startObj.chooseGridSize()
+            
             try:
-                size = int(input("Size: "))
+                print "size: ",
+                size = startObj.getGridSize()
+                print size
             except ValueError as VE:
                 print("{}\n".format(VE))
             else:
@@ -103,3 +116,6 @@ if __name__ == "__main__":
         if 'n' in repeat.lower():
             print("\nSee You Soon!\n")
             break
+
+        pygame.quit()
+        quit()

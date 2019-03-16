@@ -15,10 +15,10 @@ class Board():
         "printing the board"
         for i in range(self.__size):
             for j in self.__board[i]:
-                if j == 0: print(" _", end = ' ')
+                if j == 0: print " _",
                 else:
-                    print("%2d" % j, end = ' ')
-            print()
+                    print "%2d" % j,
+            print
 
     def getBoard(self):
         return self.__board

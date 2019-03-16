@@ -1,7 +1,6 @@
 import pygame, sys
 
-
-class Start:
+class Start(object):
     """
     This class is used to display the start page of the game
     """
@@ -12,9 +11,15 @@ class Start:
         self.display_width = width
         self.displayHeight = height
         self.clock = pygame.time.Clock()
+        self.gameExit = False
+        self.grid = True
+        self.gridSize = -1
+
         self.orange = (211, 91, 0)
         self.bright_red = (217, 39, 0)
         self.bright_orange = (234, 91, 0)
+        self.white = (255, 255, 255)
+        self.start = False
 
     def createWindow(self):
         "This method is used to create window and set caption"
@@ -22,7 +27,7 @@ class Start:
         pygame.display.set_caption("Fifteen Game")
 
     def text_objects(self, text, font):
-        self.textSurface = font.render(text, True, (255, 255    , 255))
+        self.textSurface = font.render(text, True, self.white)
         return self.textSurface, self.textSurface.get_rect()
     
     def messsage_display(self, text, x, y):
@@ -40,8 +45,17 @@ class Start:
         if x+w > self.mouse[0] > x and y+h > self.mouse[1] > y:
             pygame.draw.rect(self.gameDisplay, ac,(x,y,w,h))
 
-            if self.click[0] == 1 and action != None:
-                action()         
+            if self.click[0] == 1 and action == "start":
+                self.start = True
+                self.gameExit = True
+            elif self.click[0] == 1 and action == "exit":
+                pygame.quit()
+                quit()
+            elif self.click[0] == 1 and action >= 3 and action < 9:
+                for i in range(3, 9):
+                    if i == action:
+                        self.grid = False
+                        self.gridSize = action
         else:
             pygame.draw.rect(self.gameDisplay, ic, (x,y,w,h))
 
@@ -51,10 +65,8 @@ class Start:
         self.gameDisplay.blit(self.textSurf, self.textRect)
             
 
-    def game_loop(self):
+    def start_loop(self):
         "This method is to display all contents"
-        self.gameExit = False
-
         self.createWindow()
         
         while not self.gameExit:
@@ -67,19 +79,39 @@ class Start:
             self.messsage_display("FIFTEEN GAME", 250, 150)            
             
             #Create Start And Exit Button 
-            self.button("Start", 100, 300, 75, 50, self.bright_red, self.orange)
-            self.button("Exit", 334, 300, 75, 50, self.bright_red, self.orange)
-
+            self.button("Start", 100, 300, 75, 50, self.bright_red, self.orange, "start")
+            self.button("Exit", 334, 300, 75, 50, self.bright_red, self.orange, "exit")
+ 
             pygame.display.update()
             self.clock.tick(60)
 
-    def getInput(self):
-        "This method is taken to handle the users input"
+    def chooseGridSize(self):
+        "This method is to choose the grid size"
 
+        while self.grid:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+            
+            self.gameDisplay.fill(self.bright_orange)
+            self.messsage_display("CHOOSE GRID SIZE", 250, 150)
 
-if __name__ == "__main__":
-    pygame.init()
+            #Size buttons
+            self.button("3X3", 125, 250, 60, 50, self.bright_red, self.orange, 3)
+            self.button("4X4", 225, 250, 60, 50, self.bright_red, self.orange, 4)
+            self.button("5X5", 325, 250, 60, 50, self.bright_red, self.orange, 5)
 
-    startObj = Start(500, 500)
-    startObj.game_loop()
-    pygame.quit()
+            self.button("6X6", 125, 320, 60, 50, self.bright_red, self.orange, 6)
+            self.button("7X7", 225, 320, 60, 50, self.bright_red, self.orange, 7)
+            self.button("8X8", 325, 320, 60, 50, self.bright_red, self.orange, 8)
+                    
+            pygame.display.update()
+            self.clock.tick(60)
+
+    def getGridSize(self):
+        "This method is to return the grid size choosen"
+        return self.gridSize
+
+    def getStart(self):
+        return self.start
