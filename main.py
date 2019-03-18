@@ -1,4 +1,4 @@
-from start import Start
+from draw import Draw
 import pygame, sys
 import board
 import math
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     pygame.init()
     screen_width = 500
     screen_height = 500
-    startObj = Start(screen_width, screen_height)
+    startObj = Draw(screen_width, screen_height)
     
     while 1:
         startObj.start_loop()
@@ -100,6 +100,8 @@ if __name__ == "__main__":
                 break
             plays[obj].printBoard(startObj)
             plays[obj].makeMove(startObj)
+            
+            pygame.time.delay(50) #control the movement
             
         startObj.messsage_display("Congrats!", 250, 400)
         pygame.display.update()
