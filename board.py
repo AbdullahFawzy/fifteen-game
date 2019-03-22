@@ -13,7 +13,6 @@ class Board():
         self.__fboard = fboard
         self.__zero = [self.__size-1]*2
 
-    #
     def printBoard(self, obj):
         "printing the board"
         startX = 50*(self.__size)+self.__size
@@ -24,6 +23,7 @@ class Board():
         for i in range(self.__size):
             count = 1
             for j in self.__board[i]:
+                obj.checkQuit() #check if the user want to close the window immediately
                 if j != 0:
                     obj.drawRect(startX+(50)*count+(1*(count-1)), startY+51*(i+1)+10, 50, 50, (217, 39, 0), str(j))
                 else:

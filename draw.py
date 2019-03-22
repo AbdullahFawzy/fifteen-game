@@ -15,11 +15,13 @@ class Draw(object):
         self.grid = True
         self.gridSize = -1
 
-        self.orange = (211, 91, 0)
-        self.bright_red = (217, 39, 0)
-        self.bright_orange = (234, 91, 0)
-        self.white = (255, 255, 255)
-        self.brown = (43, 0, 0)
+        self.colors = {
+            'orange':(211, 91, 0),
+            'bright_red':(217, 39, 0),
+            'bright_orange':(234, 91, 0),
+            'white':(255, 255, 255),
+            'brown':(43, 0, 0)
+        }
         self.start = False
 
     def createWindow(self):
@@ -28,7 +30,7 @@ class Draw(object):
         pygame.display.set_caption("Fifteen Game")
 
     def text_objects(self, text, font):
-        self.textSurface = font.render(text, True, self.white)
+        self.textSurface = font.render(text, True, self.colors['white'])
         return self.textSurface, self.textSurface.get_rect()
     
     def messsage_display(self, text, x, y):
@@ -76,8 +78,8 @@ class Draw(object):
             self.messsage_display("FIFTEEN GAME", 250, 150)            
             
             #Create Start And Exit Button 
-            self.button("Start", 100, 300, 75, 50, self.bright_red, self.orange, "start")
-            self.button("Exit", 334, 300, 75, 50, self.bright_red, self.orange, "exit")
+            self.button("Start", 100, 300, 75, 50, self.colors['bright_red'], self.colors['orange'], "start")
+            self.button("Exit", 334, 300, 75, 50, self.colors['bright_red'], self.colors['orange'], "exit")
  
             pygame.display.update()
             self.clock.tick(60)
@@ -87,18 +89,17 @@ class Draw(object):
 
         while self.grid:
             self.checkQuit()
-            
             self.createGameDisplay()
             self.messsage_display("CHOOSE GRID SIZE", 250, 150)
 
             #Size buttons
-            self.button("3X3", 125, 250, 60, 50, self.bright_red, self.orange, 3)
-            self.button("4X4", 225, 250, 60, 50, self.bright_red, self.orange, 4)
-            self.button("5X5", 325, 250, 60, 50, self.bright_red, self.orange, 5)
+            self.button("3X3", 125, 250, 60, 50, self.colors['bright_red'], self.colors['orange'], 3)
+            self.button("4X4", 225, 250, 60, 50, self.colors['bright_red'], self.colors['orange'], 4)
+            self.button("5X5", 325, 250, 60, 50, self.colors['bright_red'], self.colors['orange'], 5)
 
-            self.button("6X6", 125, 320, 60, 50, self.bright_red, self.orange, 6)
-            self.button("7X7", 225, 320, 60, 50, self.bright_red, self.orange, 7)
-            self.button("8X8", 325, 320, 60, 50, self.bright_red, self.orange, 8)
+            self.button("6X6", 125, 320, 60, 50, self.colors['bright_red'], self.colors['orange'], 6)
+            self.button("7X7", 225, 320, 60, 50, self.colors['bright_red'], self.colors['orange'], 7)
+            self.button("8X8", 325, 320, 60, 50, self.colors['bright_red'], self.colors['orange'], 8)
                     
             pygame.display.update()
             self.clock.tick(60)
@@ -118,12 +119,13 @@ class Draw(object):
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
+                    return True
     
     def createGameDisplay(self):
-        self.gameDisplay.fill(self.bright_orange)
+        self.gameDisplay.fill(self.colors['bright_orange'])
 
     def createCanvas(self, x, y, w, h):
-        pygame.draw.rect(self.gameDisplay, self.brown,(x, y, w, h))
+        pygame.draw.rect(self.gameDisplay, self.colors['brown'],(x, y, w, h))
 
     def drawRect(self, x, y, w, h, color, txt):
         pygame.draw.rect(self.gameDisplay, color, pygame.Rect(x, y, w, h))

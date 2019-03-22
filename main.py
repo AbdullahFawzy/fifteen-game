@@ -69,11 +69,11 @@ if __name__ == "__main__":
     screen_height = 500
     startObj = Draw(screen_width, screen_height)
     
-    while 1:
+    while True:
         startObj.start_loop()
         print("\nPlayer #{}:\n".format(len(plays)+1))
 
-        while startObj.getStart(): #Catch ant input error from the user's size
+        while startObj.getStart(): #Catch any input error from the user's size
             pygame.time.wait(200) #delay to avoid choosing the grip mistakenly
             startObj.chooseGridSize()
             
